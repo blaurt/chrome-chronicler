@@ -12,14 +12,14 @@
     "128": "images/icon.png"
   },
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["background/background.js"],
     "persistent": false
   },
   "offline_enabled": true,
   "permissions": ["storage", "declarativeContent", "tabs"],
-  "options_page": "options.html",
+  "options_page": "options/options.html",
   "browser_action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup/popup.html",
     "default_title": "Chronicler",
     "default_icon": {
       "16": "images/icon.png",
@@ -27,5 +27,6 @@
       "48": "images/icon.png",
       "128": "images/icon.png"
     }
-  }
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

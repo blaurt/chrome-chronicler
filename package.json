@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development npx webpack  --mode development",
-    "watch": "cross-env NODE_ENV=development npx webpack  --mode development --watch",
+    "watch": "cross-env NODE_ENV=production npx webpack  --mode development --watch",
     "build": "cross-env NODE_ENV=production npx webpack --mode production",
     "start": "cross-env NODE_ENV=development npx webpack-dev-server --mode=development --open",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,8 +14,11 @@
   "author": "Dmitriy Suverov",
   "license": "MIT",
   "devDependencies": {
-    "webpack-dev-server": "^3.10.3",
-    "style-loader": "^1.1.4"
+    "@types/chrome": "0.0.107",
+    "@types/node": "^13.13.5",
+    "source-map": "^0.7.3",
+    "style-loader": "^1.1.4",
+    "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
     "@babel/core": "^7.9.0",

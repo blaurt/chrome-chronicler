@@ -1,4 +1,4 @@
-const path = require("path");
+const { join, resolve } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -22,16 +22,23 @@ function optimization() {
 }
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: {
+    options: join(__dirname, "src/options/options.ts"),
+    background: join(__dirname, "src/background.ts"),
+    popup: join(__dirname, "src/popup/popup.ts")
+  },
   output: {
-    filename: "[hash]_bundle.js",
-    path: path.resolve(__dirname, "dist")
+    path: resolve(__dirname, "dist"),
+    // filename: "[absolute-resource-path][name].js",
+    filename: chunkData => {
+      return chunkData.chunk.name === "main" ? "[name].js" : "[name]/[name].js";
+    }
   },
-  devServer: {
-    port: 4200,
-    hot: !!isDevMode
-  },
-  optimization: optimization(),
+  // devServer: {
+  //   port: 4200,
+  //   hot: !!isDevMode
+  // },
+  // optimization: optimization(),
   module: {
     rules: [
       {
@@ -75,21 +82,32 @@ module.exports = {
     extensions: [".ts", ".js"]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-      minify: {
-        collapseWhitespace: !isDevMode
-      }
+    // new HtmlWebpackPlugin({
+    //   template: "./public/index.html",
+    //   minify: {
+    //     collapseWhitespace: !isDevMode
+    //   }
+    // }),
+    new CleanWebpackPlugin({
+      cleanStaleWebpackAssets: false
     }),
-    new CleanWebpackPlugin(),
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin(
+      [
+        {
+          from: resolve(__dirname, "src"),
+          to: resolve(__dirname, "dist")
+        },
+        {
+          from: resolve(__dirname, "public"),
+          to: resolve(__dirname, "dist")
+        }
+      ],
       {
-        from: path.resolve(__dirname, "public/images"),
-        to: path.resolve(__dirname, "dist/images")
+        ignore: ["*.ts"]
       }
-    ]),
-    new MiniCssExtractPlugin({
-      filename: "[hash]_styles.css"
-    })
+    )
+    // new MiniCssExtractPlugin({
+    //   filename: "[hash]_styles.css"
+    // })
   ]
 };
